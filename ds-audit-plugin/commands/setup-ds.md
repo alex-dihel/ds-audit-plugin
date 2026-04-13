@@ -153,8 +153,9 @@ Wait for response. Store as platform.
 Read the Brand Tokens database from Notion to derive the spacing scale.
 Extract all numeric scale values, identify the base unit, and store it.
 
-Then write config.json with the following structure:
+Populate all fields from the responses collected in Steps 2-6 and the spacing scale derived from Notion, then output the complete config as a code block:
 
+```json
 {
   "notion": {
     "brand_tokens_db": "",
@@ -177,17 +178,26 @@ Then write config.json with the following structure:
   "wcag_standard": "",
   "platform": ""
 }
+```
 
-Populate all fields from the responses collected in Steps 2-6 and the spacing scale derived from Notion.
+Then output:
 
-If Claude Code asks for permission to write the file, approve it.
+---
+MANUAL STEP REQUIRED
 
-After writing, output:
+Copy the config.json content above and save it as a file called config.json in your project folder -- the same folder you opened in Cowork for this session.
+
+Once saved, type CONFIRM to continue.
+---
+
+Wait for CONFIRM before proceeding.
+
+After CONFIRM, attempt to read config.json from the current working directory.
+
+If found, output:
 
 ---
 SETUP COMPLETE
-
-config.json saved to your current project folder. Always open this same folder in Cowork when running audit, update, and handover commands.
 
 Your configuration:
 - Notion databases: 6 connected
@@ -200,6 +210,14 @@ Your configuration:
 
 You are ready to run /audit-ds, /update-ds, and /handover-ds.
 ---
+
+If not found, output:
+
+---
+config.json was not found in the current working directory. Make sure you saved the file into the folder you opened in Cowork for this session, then type CONFIRM to try again.
+---
+
+Wait for CONFIRM and retry reading until the file is found.
 
 ## Execution rules
 - Never skip a step

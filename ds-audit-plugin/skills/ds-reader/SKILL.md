@@ -9,11 +9,16 @@ Define how to read design system data from the Notion databases created in Advan
 
 ## Pre-conditions
 - Notion must be connected
-- config.json must exist in the plugin root with valid database IDs
-- If config.json is missing, stop and tell the user to run /setup-ds first
+- config.json must exist in the current working directory with valid database IDs
 
 ## Reading config.json
-At the start of any command that needs DS data, read config.json from the plugin root folder.
+At the start of every command, check for config.json in the current working directory. If not found, stop immediately and output:
+
+"config.json not found in this folder. Make sure you opened your project folder in Cowork and that config.json is present. Run /setup-ds if you need to create it."
+
+Do not proceed with any command until config.json is found.
+
+If found, read config.json from the current working directory.
 Extract the following values:
 - notion.brand_tokens_db -- Brand Tokens database ID
 - notion.alias_tokens_db -- Alias Tokens database ID
