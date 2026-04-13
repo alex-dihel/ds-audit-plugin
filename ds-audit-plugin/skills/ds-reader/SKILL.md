@@ -18,18 +18,25 @@ At the start of every command, check for config.json in the current working dire
 
 Do not proceed with any command until config.json is found.
 
-If found, read config.json from the current working directory. Output:
+If found, read config.json from the current working directory.
 
-CONFIG FOUND: [full file path to config.json]
-DS file: [ds_file_url value]
-Brand Tokens DB: [notion.brand_tokens_db value]
-Components DB: [notion.components_db value]
-WCAG standard: [wcag_standard value]
-Platform: [platform value]
+Before asking for confirmation, resolve the following:
+- Parse the Figma file name from the ds_file_url value. The file name is the path segment immediately after the file key in the URL (e.g. in /design/abc123/Nitool the file name is Nitool). Replace hyphens with spaces.
+- Query Notion using the notion.brand_tokens_db ID to retrieve the parent page. Use the parent page title and URL as the Notion workspace reference.
+
+Then output:
+
+CONFIG FOUND
+
+- Config location: [path to config.json]
+- Figma file: [parsed file name] -- [ds_file_url]
+- Notion workspace: [parent page title] -- [parent page URL]
+- Accessibility standard: [wcag_standard value]
+- Platform: [platform value]
 
 Type YES to proceed with this config, or SETUP to stop and run /setup-ds instead.
 
-Wait for the user's response before doing anything else. If the user types YES, proceed to extract all config values. If the user types SETUP, stop and output: "Run /setup-ds to reconfigure your connection."
+Wait for the user's response before doing anything else. If YES, proceed to extract all config values. If SETUP, stop and output: "Run /setup-ds to reconfigure your connection."
 
 Extract the following values:
 - notion.brand_tokens_db -- Brand Tokens database ID
