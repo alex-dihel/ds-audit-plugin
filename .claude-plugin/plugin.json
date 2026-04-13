@@ -1,0 +1,16 @@
+{
+  "name": "ds-audit-plugin",
+  "version": "1.0.0",
+  "description": "Design system audit, update, and handover tools for design teams. Requires completed Notion DS documentation from Advanced Guide 2/5.",
+  "author": { "name": "Alex Dihel" },
+  "commands": ["./commands/"],
+  "skills": ["./skills/"],
+  "userConfig": {
+    "figma_access_token": {
+      "title": "Figma Access Token",
+      "description": "Your Figma personal access token (starts with figd_)",
+      "type": "string",
+      "sensitive": true
+    }
+  }
+}
