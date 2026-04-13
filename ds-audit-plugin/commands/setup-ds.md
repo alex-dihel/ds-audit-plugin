@@ -1,11 +1,11 @@
 ---
-description: One-time guided setup that connects the plugin to your Notion DS documentation and Figma DS file, saving configuration to ${CLAUDE_PLUGIN_DATA}/config.json.
+description: One-time guided setup that connects the plugin to your Notion DS documentation and Figma DS file, saving configuration to config.json.
 ---
 
 # Command: /setup-ds
 
 ## Purpose
-One-time guided setup for the DS Audit Plugin. Collects DS-specific configuration from the user and saves it to ${CLAUDE_PLUGIN_DATA}/config.json. All other commands depend on this file.
+One-time guided setup for the DS Audit Plugin. Collects DS-specific configuration from the user and saves it to config.json. All other commands depend on this file.
 
 ## When to run
 Run once when first installing the plugin. Re-run any time the DS structure changes significantly -- new Notion databases, new Figma file, different platform scope.
@@ -153,7 +153,7 @@ Wait for response. Store as platform.
 Read the Brand Tokens database from Notion to derive the spacing scale.
 Extract all numeric scale values, identify the base unit, and store it.
 
-Then write ${CLAUDE_PLUGIN_DATA}/config.json with the following structure:
+Then write config.json with the following structure:
 
 {
   "notion": {
@@ -187,7 +187,7 @@ After writing, output:
 ---
 SETUP COMPLETE
 
-config.json saved to plugin data storage.
+config.json saved to your current project folder. Always open this same folder in Cowork when running audit, update, and handover commands.
 
 Your configuration:
 - Notion databases: 6 connected
@@ -206,4 +206,4 @@ You are ready to run /audit-ds, /update-ds, and /handover-ds.
 - Never proceed past any input gate without a response
 - Validate database IDs before saving
 - If Notion connection fails at Step 8, report the error and ask user to reconnect before retrying
-- If ${CLAUDE_PLUGIN_DATA}/config.json already exists, ask: Update existing config or start fresh?
+- If config.json already exists, ask: Update existing config or start fresh?
