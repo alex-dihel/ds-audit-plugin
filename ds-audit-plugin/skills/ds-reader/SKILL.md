@@ -18,7 +18,19 @@ At the start of every command, check for config.json in the current working dire
 
 Do not proceed with any command until config.json is found.
 
-If found, read config.json from the current working directory.
+If found, read config.json from the current working directory. Output:
+
+CONFIG FOUND: [full file path to config.json]
+DS file: [ds_file_url value]
+Brand Tokens DB: [notion.brand_tokens_db value]
+Components DB: [notion.components_db value]
+WCAG standard: [wcag_standard value]
+Platform: [platform value]
+
+Type YES to proceed with this config, or SETUP to stop and run /setup-ds instead.
+
+Wait for the user's response before doing anything else. If the user types YES, proceed to extract all config values. If the user types SETUP, stop and output: "Run /setup-ds to reconfigure your connection."
+
 Extract the following values:
 - notion.brand_tokens_db -- Brand Tokens database ID
 - notion.alias_tokens_db -- Alias Tokens database ID
