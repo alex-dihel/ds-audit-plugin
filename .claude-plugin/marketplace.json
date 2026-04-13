@@ -1,0 +1,21 @@
+{
+  "name": "ds-audit-plugin",
+  "owner": {
+    "name": "Alex Dihel"
+  },
+  "metadata": {
+    "description": "Design system audit, update, and handover tools for design teams."
+  },
+  "plugins": [
+    {
+      "name": "ds-audit-plugin",
+      "source": "./ds-audit-plugin",
+      "description": "Design system audit, update, and handover tools for design teams. Requires completed Notion DS documentation from Advanced Guide 2/5.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Alex Dihel"
+      },
+      "homepage": "https://github.com/alex-dihel/ds-audit-plugin"
+    }
+  ]
+}
