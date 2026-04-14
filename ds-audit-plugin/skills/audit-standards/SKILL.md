@@ -20,7 +20,7 @@ Before running any checks, ask the user the following two questions and wait for
 
 Store both answers for the duration of this audit session.
 
-Exclusions: Do not evaluate any element, layer, or frame the user listed. Skip them in every check type without flagging.
+Exclusions: Do not evaluate any element, layer, or frame the user listed, and do not evaluate any child node inside them at any depth. Skip the named node and its entire subtree in every check type without flagging.
 Exceptions: When a violation matches a listed exception, do not flag it as a violation. Instead, add a line in the report: "Known exception: [user's description]"
 
 ## Spacing
@@ -47,6 +47,7 @@ WCAG 2.1 AA minimums:
 - Normal text contrast: 4.5:1
 - Large text contrast (18pt+ regular, 14pt+ bold): 3:1
 - UI components and icons: 3:1 against their direct interactive background. The direct interactive background is the fill of the immediate parent container that is part of the same interactive element, or the container the component is placed directly inside and which has an interactive function. Do not check contrast between two decorative background layers where neither layer is interactive and neither conveys meaning on its own.
+- Surface containers, card backgrounds, table backgrounds, and panel backgrounds whose only function is to visually group or separate content are decorative. Do not apply the 3:1 check to contrast between these surfaces and the page background behind them. If flagging is warranted, add it as a LOW note with the label SURFACE CONTRAST rather than a CRITICAL or HIGH violation.
 - Touch targets (mobile): 44x44px
 
 WCAG 2.2 AA adds:
