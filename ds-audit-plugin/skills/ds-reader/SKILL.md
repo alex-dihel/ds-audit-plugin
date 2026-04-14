@@ -20,17 +20,13 @@ Do not proceed with any command until config.json is found.
 
 If found, read config.json from the current working directory.
 
-Before asking for confirmation, resolve the following:
-- Parse the Figma file name from the ds_file_url value. The file name is the path segment immediately after the file key in the URL (e.g. in /design/abc123/Nitool the file name is Nitool). Replace hyphens with spaces.
-- Query Notion using the notion.brand_tokens_db ID to retrieve the parent page. Use the parent page title and URL as the Notion workspace reference.
-
-Then output:
+Output:
 
 CONFIG FOUND
 
-- Config location: [path to config.json]
-- Figma file: [parsed file name] -- [ds_file_url]
-- Notion workspace: [parent page title] -- [parent page URL]
+- Config file: [full path to config.json]
+- Figma file: [ds_file_name value] -- [ds_file_url value]
+- Notion workspace: [notion_workspace_name value] -- [notion_workspace_url value]
 - Accessibility standard: [wcag_standard value]
 - Platform: [platform value]
 

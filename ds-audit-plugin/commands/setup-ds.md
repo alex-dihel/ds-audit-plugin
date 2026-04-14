@@ -63,7 +63,7 @@ Type RECHECK to search again if something looks wrong.
 
 Wait for response before proceeding.
 
-Store all discovered database IDs automatically. Do not ask the user to provide any IDs manually.
+Store all discovered database IDs automatically. Do not ask the user to provide any IDs manually. Also store the teamspace name from the user's input as notion_workspace_name. Retrieve the URL of the Notion page that contains these databases and store it as notion_workspace_url.
 
 ---
 
@@ -74,7 +74,7 @@ STEP 2 OF 5 -- FIGMA DS FILE
 
 Paste the URL of your Figma DS file -- the file that contains your variables, styles, and components.
 
-Wait for response. Extract and store the file key from the URL.
+Wait for response. Extract and store the file key from the URL. Also parse the file name from the URL: it is the path segment immediately after the file key (e.g. in /design/abc123/My-Design-System?m=dev the segment is My-Design-System). Replace all hyphens with spaces. Store as ds_file_name.
 
 ---
 
@@ -167,6 +167,9 @@ Populate all fields from the responses collected in Steps 2-6 and the spacing sc
   },
   "ds_file_url": "",
   "ds_file_key": "",
+  "ds_file_name": "",
+  "notion_workspace_name": "",
+  "notion_workspace_url": "",
   "component_location": "",
   "component_page": "",
   "spacing_scale": 0,
