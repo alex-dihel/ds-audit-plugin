@@ -211,7 +211,7 @@ Your configuration:
 - Accessibility standard: [value]
 - Platform: [value]
 
-You are ready to run /audit-ds, /update-ds, and /handover-ds.
+You are ready to run /audit-standards.
 ---
 
 If not found, output:
