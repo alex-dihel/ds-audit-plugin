@@ -20,7 +20,7 @@ Before running any checks, ask the user the following two questions and wait for
 
 Store both answers for the duration of this audit session.
 
-Exclusions: Do not evaluate any element, layer, or frame the user listed, and do not evaluate any child node inside them at any depth. Skip the named node and its entire subtree in every check type without flagging.
+Exclusions: Before evaluating any node, walk its full ancestor chain from the node up to the top-level frame. If the node itself or any ancestor at any level appears in the exclusion list, skip the node entirely across all check types without flagging. Do not evaluate any child of an excluded node at any depth. The exclusion covers the named node, its entire descendant subtree, and any node whose ancestor chain passes through the excluded node.
 Exceptions: When a violation matches a listed exception, do not flag it as a violation. Instead, add a line in the report: "Known exception: [user's description]"
 
 ## Spacing
@@ -41,6 +41,9 @@ Violations:
 - Any missing variable binding is a violation
 
 ## Accessibility -- WCAG Standard
+
+Accessibility checks are mandatory and must run on every audit without exception. Do not skip or defer accessibility checks regardless of which other checks are running.
+
 The accessibility standard to apply is stored in config.json under wcag_standard. Valid values: WCAG_2_1_AA, WCAG_2_2_AA, WCAG_2_2_AAA.
 
 WCAG 2.1 AA minimums:
@@ -73,15 +76,20 @@ Violations:
 - Custom components that duplicate existing DS components
 
 ## Component States
-Every interactive component must have the following states present in the DS file:
-- Default
-- Hover
-- Focus
-- Active
-- Disabled
-- Error (where applicable)
+Every interactive component must have the following state values present somewhere in its variant set:
 
-When checking state coverage, scan across all variant properties in the full variant set of the component. Do not check per variant property axis in isolation. A component passes the states check if the state value appears anywhere in the full set of variant combinations, regardless of which variant property carries it. Only flag a component as missing a state if that state value is absent from the entire variant set.
+* default / Default
+* hover / Hover
+* focus / Focus
+* active / Active / pressed / Pressed
+* disabled / Disabled
+* error / Error -- where applicable
+
+State detection rules:
+- Scan the VALUES of all variant properties across the full variant set. Do not look for a property named "State" -- the property carrying state values can be named anything: Status, State, Mode, Interaction, Type, or any other name.
+- A component passes the check for a given state if that state value appears anywhere in the full variant set, regardless of which property carries it.
+- Only flag a component as missing a state if that state value is absent from the entire variant set.
+- Casing differences (Default vs default) are acceptable and must not be flagged as inconsistencies or missing states.
 
 ## Responsive Coverage
 Required breakpoints are derived from the Responsive Tokens database -- desktop, tablet, and mobile. Check that designs are present for all breakpoints defined in the DS.
@@ -97,15 +105,25 @@ Information must not be conveyed by color alone. Any element that uses color as 
 
 ## Reporting Format
 For every violation, output:
-[PRIORITY] Element name
-Current: <current value>
-Expected: <expected value>
-Note: <brief reason if not obvious>
 
-Priority labels:
-- CRITICAL: token tier violations, WCAG contrast failures
-- HIGH: missing component states, responsive coverage gaps, detached instances
-- MEDIUM: typography violations, color independence issues
-- LOW: layer hygiene, naming issues
+[PRIORITY INDICATOR] [PRIORITY] Frame: [frame name] > Component: [nearest named parent component] > Element: [element name]
+- Current: [current value]
+- Expected: [expected value]
+- Note: [reason if not immediately obvious]
+
+If the element has no named parent component and sits directly in the frame, omit the Component segment: Frame: [frame name] > Element: [element name]
+
+Leave one blank line between each violation block. Leave two blank lines between frames.
+
+Every hex color value anywhere in the output must be preceded by its color swatch indicator.
+
+Priority labels and their indicators:
+
+* 🔴 CRITICAL: token tier violations, WCAG contrast failures
+* 🟠 HIGH: missing component states, responsive coverage gaps, detached instances
+* 🟡 MEDIUM: typography violations, color independence issues
+* 🔵 LOW: layer hygiene, naming issues
 
 Group violations by frame. End with a summary count per category.
+
+After the full report has been output in chat, save the complete report to a file in the current working directory. File name format: audit-DD-MM-YYYY-HH-MM.md using the current date and time. Confirm the saved file name and path after saving.
