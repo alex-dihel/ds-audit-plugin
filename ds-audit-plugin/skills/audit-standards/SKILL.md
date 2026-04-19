@@ -64,6 +64,8 @@ WCAG 2.2 AAA adds:
 
 For contrast violations, always cross-reference the Notion DS token databases and suggest the closest DS token that would pass.
 
+Scan depth: check text colors and fill values at all depths within every component instance. This includes nested component instances, child frames inside variants, and text layers at any level of nesting. Do not stop at the top-level instance -- descend into the full layer tree of each component to catch violations on nested elements such as placeholder text inside an input field that is itself inside a compound component.
+
 ## Typography
 Valid font families, line height multipliers, and text styles are defined in the Notion Text Styles and Responsive Tokens databases. Do not hardcode any values. Read from Notion at the start of each audit.
 
@@ -71,7 +73,7 @@ Valid font families, line height multipliers, and text styles are defined in the
 The component library source of truth is the Figma DS file defined in config.json under ds_file_url. All component instances in the audited file must trace back to this library.
 
 Violations:
-- Detached instances
+- Detached instances -- an instance is detached only when Figma reports its node type as FRAME or GROUP instead of INSTANCE. Do not flag a component as detached based on name comparison, property value differences, or missing Notion database matches. A live INSTANCE node with property overrides is not detached.
 - Manual property overrides outside defined variants
 - Custom components that duplicate existing DS components
 
@@ -104,9 +106,20 @@ Information must not be conveyed by color alone. Any element that uses color as 
 - Flag any layer more than 6 levels deep
 
 ## Reporting Format
-For every violation, output:
+Group all violations by priority level first, then by frame within each priority group.
 
-[PRIORITY INDICATOR] [PRIORITY] Frame: [frame name] > Component: [nearest named parent component] > Element: [element name]
+For each priority group that has violations, output a section header:
+
+- CRITICAL
+- HIGH
+- MEDIUM
+- LOW
+
+Omit priority groups with no violations entirely.
+
+Within each priority group, group violations by frame. For each frame, output the frame name as a subheading. Then for each violation:
+
+Frame: [frame name] > Component: [nearest named parent component] > Element: [element name]
 - Current: [current value]
 - Expected: [expected value]
 - Note: [reason if not immediately obvious]
@@ -117,13 +130,13 @@ Leave one blank line between each violation block. Leave two blank lines between
 
 Every hex color value anywhere in the output must be preceded by its color swatch indicator.
 
-Priority labels and their indicators:
+Priority levels:
 
-* 🔴 CRITICAL: token tier violations, WCAG contrast failures
-* 🟠 HIGH: missing component states, responsive coverage gaps, detached instances
-* 🟡 MEDIUM: typography violations, color independence issues
-* 🔵 LOW: layer hygiene, naming issues
+- CRITICAL: token tier violations, WCAG contrast failures
+- HIGH: missing component states, responsive coverage gaps, detached instances
+- MEDIUM: typography violations, color independence issues
+- LOW: layer hygiene, naming issues
 
-Group violations by frame. End with a summary count per category.
+End with a summary count per priority level.
 
 After the full report has been output in chat, save the complete report to a file in the current working directory. File name format: audit-DD-MM-YYYY-HH-MM.md using the current date and time. Confirm the saved file name and path after saving.
