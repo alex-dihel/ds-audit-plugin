@@ -213,9 +213,58 @@ Report structure per page:
 
 ---
 
-## Step 8 -- Save report
+## Step 8 -- QA coverage check
 
-After the full report is output in chat, save it to the current working directory.
+After the report is output in chat, run a self-audit before saving.
+
+For each check type that was run, output a coverage block:
+
+CHECK: [check name]
+- Frames or nodes in scope: [list from Step 3]
+- Frames or nodes evaluated: [list actually scanned during Step 6]
+- Nodes not reached: [any in-scope frames or nodes that were not evaluated -- or NONE]
+
+After all coverage blocks, output:
+
+COVERAGE SUMMARY
+- Checks with full coverage: [list]
+- Checks with gaps: [list, or NONE]
+
+Then output:
+
+QA OPTIONS
+Type COMPLETE to accept the report as-is and save.
+Type FILL [check type] to rerun that check on missed nodes only and merge results before saving.
+Type FILL ALL to rerun all checks with gaps on their missed nodes before saving.
+
+Wait for response before proceeding.
+
+On COMPLETE: proceed to Step 9.
+
+On FILL [check type]:
+- Rerun the named check on the nodes listed as not reached for that check only
+- Do not rerun nodes already evaluated
+- Merge the new findings into the existing report in the correct section
+- If Desktop Bridge drops during fill, stop and output: FILL PAUSED -- reconnect Desktop Bridge and type RESUME FILL to continue
+- Output: FILLED: [check name] -- [n] additional nodes evaluated, [n] new violations found
+- Output a refreshed coverage summary showing updated gap status across all checks
+- Return to the QA OPTIONS prompt and wait for response
+
+On FILL ALL:
+- Rerun each check that has gaps, on its missed nodes only, in the same order as Step 6
+- Do not rerun nodes already evaluated
+- Merge all new findings into the existing report in their correct sections
+- If Desktop Bridge drops during fill, stop and output: FILL PAUSED -- reconnect Desktop Bridge and type RESUME FILL to continue
+- Output: FILLED ALL -- [n] checks supplemented, [n] additional nodes evaluated, [n] new violations found
+- Proceed directly to Step 9
+
+---
+
+## Step 9 -- Save report
+
+After the QA gate is resolved, read the current date and time at the moment of writing the file -- not from session start. Use this value for both the filename and the timestamp in the report header.
+
+Save the report to the current working directory.
 
 If the audit covers one page: one file.
 If the audit covers multiple pages: one file per page.
